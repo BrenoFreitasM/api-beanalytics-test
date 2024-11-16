@@ -24,7 +24,13 @@ const tenantSchema = new mongoose.Schema({
     properties: [{
         type: mongoose.Types.ObjectId,
         ref: 'property'
-    }]
+    }],
+
+    value: {
+        type: Number,
+        required: true,
+        default: 0
+    }
 });
 
 module.exports = mongoose.model('Tenant', tenantSchema);

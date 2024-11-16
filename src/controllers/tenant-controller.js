@@ -35,7 +35,7 @@ exports.register = async (req, res) => {
 exports.update = async (req, res) => {
     try {
         const cpf = req.body.cpf;
-        const { name, overdue, overdueTime, phone, properties } = req.body;
+        const { name, overdue, value, overdueTime, phone, properties } = req.body;
 
         // Verificar se o inquilino com o CPF especificado existe
         const existingTenant = await Tenant.findOne({ cpf: cpf });
@@ -46,6 +46,7 @@ exports.update = async (req, res) => {
 
         // Atualizar os dados do inquilino com os novos valores, se fornecidos
         existingTenant.name = name || existingTenant.name;
+        existingTenant.value = value || existingTenant.value;
         existingTenant.overdue = overdue !== undefined ? overdue : existingTenant.overdue;
         existingTenant.overdueTime = overdueTime || existingTenant.overdueTime;
         existingTenant.phone = phone || existingTenant.phone;
