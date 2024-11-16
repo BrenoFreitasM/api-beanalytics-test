@@ -54,7 +54,7 @@ exports.update = async (req, res) => {
         // Salvar as atualizações no banco de dados
         await existingTenant.save();
 
-        res.status(200).json({ message: 'Inquilino atualizado com sucesso!', tenant: existingTenant });
+        res.status(200).json(existingTenant);
     } catch (error) {
         res.status(500).json({ message: 'Erro no servidor', error });
     }
@@ -62,12 +62,13 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const cpf = req.params.cpf; 
+        const _id = req.params._id; 
 
-        // Verificar se o inquilino com o CPF especificado existe
-        const existingTenant = await Tenant.findOne({ cpf: cpf });
+        // Verificar se o inquilino com o _id especificado existe
+        const existingTenant = await Tenant.findOne({ _id: _id });
 
         if (!existingTenant) {
+            console.log('Inquilino não encontrado')
             return res.status(404).json({ message: 'Inquilino não encontrado.' });
         }
 
@@ -76,7 +77,19 @@ exports.delete = async (req, res) => {
 
         res.status(200).json({ message: 'Inquilino excluído com sucesso!' });
     } catch (error) {
-        res.status(500).json({ message: 'Erro no servidor', error });
+        console.log(error)
+        res.status(500).json({ message: 'Erro no servidor', error: error });
     }
 };
 
+exports.listAll = async (req, res) => {
+    try {
+
+        const data = await Tenant.find({})
+
+        res.status(200).json(data)
+
+    } catch (error) {
+        res.status(500).json({ message: 'Erro no servidor', error });
+    }
+}

@@ -16,8 +16,13 @@ const propertySchema = new mongoose.Schema({
         default: 'small'
     },
     tenant: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Tenant',
+        name: {
+            type: String
+        },
+        _id : {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Tenant',
+        }
     },
     images: [{
         path: {

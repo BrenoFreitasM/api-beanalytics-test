@@ -7,6 +7,8 @@ router.put('/register', validateKey, tenantController.register);
 
 router.post('/update', validateKey, tenantController.update);
 
-router.delete('/:cpf', validateKey, tenantController.delete)
+router.delete('/:cpf', validateKey, tenantController.delete);
+
+router.get('/', validateKey, tenantController.listAll);
 
 module.exports = router;

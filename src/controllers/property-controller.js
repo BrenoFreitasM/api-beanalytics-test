@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
 
         const newProperty = await Property.create(req.body);
 
-        res.status(201).json({ message: 'Propriedade criada com sucesso!', tenant: newProperty})
+        res.status(201).json(newProperty)
 
     } catch (error) {
         res.status(500).json({ message: 'Error no servidor', error });
@@ -21,12 +21,12 @@ exports.register = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const { code, name, size, tenant, images } = req.body;
+        const { _id, code, name, size, tenant, images } = req.body;
 
-        const existingProperty = await Property.findOne({ code: code });
+        const existingProperty = await Property.findOne({ _id: _id });
         
         if ( !existingProperty ) {
-            return res.statu(404).json({ message: "Propriedade não encontrada."});
+            return res.status(404).json({ message: "Propriedade não encontrada."});
         }
 
         existingProperty.code = code || existingProperty.code;
@@ -40,24 +40,37 @@ exports.update = async (req, res) => {
         res.status(200).json({ message: 'Propriedade atualizada com sucesso!', property: existingProperty });
 
     } catch (error) {
-        res.status(500).json({ message: 'Erro no servidor', error });
+        console.log(error)
+        res.status(500).json({ message: 'Erro no servidor', error : error});
     }
 }
 
 exports.delete = async (req, res) => {
     try {
-        const code = req.params.code; 
+        const id = req.params.id; 
 
-        const existingProperty = await Property.findOne({ code: code });
+        const existingProperty = await Property.findOne({ _id: id });
 
         if ( !existingProperty ) {
             return res.statu(404).json({ message: 'Propriedade não encontrada.'});
         }
 
-        await Property.deleteOne({ code: code });
+        await Property.deleteOne({ _id: id });
 
         res.status(200).json({ message: 'Inquilino excluído com sucesso!'});
         
+    } catch (error) {
+        res.status(500).json({ message: 'Erro no servidor', error });
+    }
+}
+
+exports.listAll = async (req, res) => {
+    try {
+
+        const data = await Property.find({})
+
+        res.status(200).json(data)
+
     } catch (error) {
         res.status(500).json({ message: 'Erro no servidor', error });
     }
