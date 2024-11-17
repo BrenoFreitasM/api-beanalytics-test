@@ -1,4 +1,3 @@
-const property = require('../models/property');
 const Property = require('../models/property');
 
 exports.register = async (req, res) => {
@@ -8,11 +7,11 @@ exports.register = async (req, res) => {
 
         if ( existingProperty ) {
             return res.status(400).json({ message: 'Propriedade já cadastrada.'});
-        }
+        };
 
         const newProperty = await Property.create(req.body);
 
-        res.status(201).json(newProperty)
+        res.status(201).json(newProperty);
 
     } catch (error) {
         res.status(500).json({ message: 'Error no servidor', error });

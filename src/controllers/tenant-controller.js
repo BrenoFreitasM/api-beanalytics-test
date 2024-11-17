@@ -1,4 +1,5 @@
 const Tenant = require('../models/tenant');
+const Property = require('../models/property');
 const mongoose = require('mongoose');
 
 exports.register = async (req, res) => {
@@ -86,14 +87,23 @@ exports.delete = async (req, res) => {
 
 exports.listAll = async (req, res) => {
     try {
+        const data = await Tenant.find({});
+        const properties = await Property.find({});
 
-        const data = await Tenant.find({})
+        for (let i = 0; i < data.length; i++) {
+            properties.forEach((property) => {
+                if (property?.tenant?._id?.toString() === data[i]._id.toString()) {
+                    data[i].properties = (data[i].properties || 0) + 1; // Incrementa o contador
+                }
+            });
+        }
 
-        res.status(200).json(data)
-
+        res.status(200).json(data);
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: 'Erro no servidor', error });
     }
-}
+};
+
 
 exports.list

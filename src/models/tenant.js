@@ -21,10 +21,14 @@ const tenantSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    properties: [{
-        type: mongoose.Types.ObjectId,
-        ref: 'property'
-    }],
+    properties: {
+        type: Number,
+        default: 0
+    },
+    // properties: [{
+    //     type: mongoose.Types.ObjectId,
+    //     ref: 'property'
+    // }],
 
     value: {
         type: Number,
