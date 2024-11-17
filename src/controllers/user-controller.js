@@ -45,7 +45,7 @@ exports.login = async (req, res) => {
             return res.status(401).json({ message: 'Credenciais inválidas'})
         }
 
-        res.status(200).json({ message: 'Login bem-sucedido', id: user._id });
+        res.status(200).json({ message: 'Login bem-sucedido', user: user });
 
     } catch (error) {
         res.status(500).json({ message: 'Error no servidor', error });
