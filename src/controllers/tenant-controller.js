@@ -1,4 +1,5 @@
 const Tenant = require('../models/tenant');
+const mongoose = require('mongoose');
 
 exports.register = async (req, res) => {
     try {
@@ -6,7 +7,7 @@ exports.register = async (req, res) => {
         var name = req.body.name
         var overdue = req.body.overdue ? req.body.overdue : false;
         var overdueTime = req.body.overdueTime ? req.body.overdueTime : 0;
-        var phone = req.body.name ? req.body.name : ''
+        var phone = req.body.phone ? req.body.phone : ''
         var cpf = req.body.cpf ? req.body.cpf : ''
         var propertires = req.body.propertires
         
@@ -34,11 +35,11 @@ exports.register = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const cpf = req.body.cpf;
+        const id = req.body._id;
         const { name, overdue, value, overdueTime, phone, properties } = req.body;
 
-        // Verificar se o inquilino com o CPF especificado existe
-        const existingTenant = await Tenant.findOne({ cpf: cpf });
+        // Verificar se o inquilino com o id especificado existe
+        const existingTenant = await Tenant.findOne({ _id: id });
 
         if (!existingTenant) {
             return res.status(404).json({ message: 'Inquilino não encontrado.' });
@@ -63,10 +64,10 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     try {
-        const _id = req.params._id; 
+        const id = req.params.id; 
 
         // Verificar se o inquilino com o _id especificado existe
-        const existingTenant = await Tenant.findOne({ _id: _id });
+        const existingTenant = await Tenant.findOne({ _id: id });
 
         if (!existingTenant) {
             console.log('Inquilino não encontrado')
@@ -74,7 +75,7 @@ exports.delete = async (req, res) => {
         }
 
         // Remover o inquilino do banco de dados
-        await Tenant.deleteOne({ cpf: cpf });
+        await Tenant.deleteOne({ _id: id });
 
         res.status(200).json({ message: 'Inquilino excluído com sucesso!' });
     } catch (error) {
@@ -94,3 +95,5 @@ exports.listAll = async (req, res) => {
         res.status(500).json({ message: 'Erro no servidor', error });
     }
 }
+
+exports.list
